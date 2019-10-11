@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+		<!-- 使用Spring的方式配置一个连接池 -->
+		
+		
+		
+		
+		
+		
+		
+		
+		<!-- 
+		使用spring表达式来读取其它bean的属性值
+		 -->
+		 <bean id="sb1" class="value.SpelBean">
+		 <property name="name" value="#{vb1.name}"></property>
+		   <property name="interest" value="#{vb1.interest[1]}"></property>
+		    <property name="score" value="#{vb1.score['英语']}"></property>
+		     <property name="pageSize" value="#{config['pagesize']}"></property>
+		 </bean>
+		
+		
+		
+	<!-- 注入基本类型属性的值（包括String），使用value属性 -->
+	<bean id="vb1" class="value.ValueBean">
+		<property name="name" value="花花" />
+		<property name="age" value="18" />
+		<property name="interest">
+			<list>
+				<value>钓鱼</value>
+				<value>做饭</value>
+				<value>看电视</value>
+				<value>看电视</value>
+			</list>
+		</property>
+		<property name="city">
+			<set>
+				<value>北京</value>
+				<value>洛阳</value>
+				<value>洛阳</value>
+				<value>南京</value>
+			</set>
+		</property>
+		<property name="score">
+			<map>
+				<entry key="英语" value="60" />
+				<entry key="math" value="99" />
+			</map>
+		</property>
+		<property name="db">
+			<props>
+				<prop key="username">李白</prop>
+				<prop key="password">桃红</prop>
+			</props>
+
+		</property>
+	</bean>
+	<!-- 使用引用的方式注入集合类型的值 -->
+	<util:list id="interestBean">
+		<value>抽烟</value>
+		<value>喝酒</value>
+		<value>烫头</value>
+	</util:list>
+	<util:set id="cityBean">
+		<value>南阳</value>
+		<value>开封</value>
+		<value>安阳</value>
+	</util:set>
+	<util:map id="scoreBean">
+		<entry key="english" value="12">
+		</entry>
+		<entry key="sport" value="92">
+		</entry>
+	</util:map>
+	<util:properties id="dbBean">
+		<prop key="username">李白</prop>
+		<prop key="password">密码</prop>
+	</util:properties>
+	<bean id="vb2" class="value.ValueBean">
+		<property name="interest" ref="interestBean"></property>
+		<property name="city" ref="cityBean"></property>
+		<property name="score" ref="scoreBean"></property>
+		<property name="db" ref="dbBean"></property>
+	</bean>
+	<!-- 
+	读取.properties文件的内容(Rod Johnson)
+	location属性指定properties文件的位置，Spring容器会读取指定文件的内容，然后将这些内容添加到了
+	Properties对象里面。
+	 -->
+	 <util:properties id="config" location="classpath:config.properties"/>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</beans>
